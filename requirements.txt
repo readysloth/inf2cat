@@ -1,0 +1,9 @@
+altgraph==0.17.3
+cffi==1.15.1
+cryptography==40.0.2
+Nuitka==1.5.8
+ordered-set==4.1.0
+pycparser==2.21
+pyinstaller==5.11.0
+pyinstaller-hooks-contrib==2023.3
+zstandard==0.21.0
