@@ -32,7 +32,7 @@ def generate_cert(private_key):
     return builder.sign(private_key=private_key, algorithm=hashes.SHA256())
 
 
-def sign_driver(driver=None):
+def sign_driver(driver=None, output_cat='certificate.cat'):
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     with open('key.pem', 'wb') as f:
         key_bytes = private_key.private_bytes(encoding=serialization.Encoding.PEM,
@@ -50,14 +50,18 @@ def sign_driver(driver=None):
                                             .add_signer(cert, private_key, hashes.SHA256()) \
                                             .sign(encoding=serialization.Encoding.DER,
                                                   options=[pkcs7.PKCS7Options.DetachedSignature])
-    with open("certificate.cat", "wb") as f:
+    with open(output_cat, 'wb') as f:
         f.write(cat_file)
 
 
 def main():
     parser = argparse.ArgumentParser(description='Creates .cat file without even using .inf')
-    parser.add_argument('--driver',
+    parser.add_argument('-d', '--driver',
                         required=False,
                         help='path to .sys file that should be "signed"')
+    parser.add_argument('-o', '--output',
+                        required=False,
+                        default='certificate.cat',
+                        help='output file')
     args = parser.parse_args()
-    sign_driver(args.driver)
+    sign_driver(args.driver, args.output)
