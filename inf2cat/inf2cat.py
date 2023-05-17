@@ -53,8 +53,6 @@ def sign_driver(driver=None):
     with open("certificate.cat", "wb") as f:
         f.write(cat_file)
 
-        # f.write(pkcs7.serialize_certificates([cert], encoding=serialization.Encoding.DER))
-
 
 def main():
     parser = argparse.ArgumentParser(description='Creates .cat file without even using .inf')
