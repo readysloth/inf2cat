@@ -4,12 +4,22 @@ import argparse
 
 from datetime import datetime
 
+from asn1crypto import cms
+
 from cryptography import x509
 from cryptography.x509.oid import NameOID
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.serialization import pkcs7
+
+from .cat_type_blob import CAT_FILE_TYPE_BLOB
+
+
+def add_cat_type_to_pkcs7(data):
+    content_info = cms.ContentInfo.load(data)
+    content_info[1][2] = cms.ContentInfo.load(CAT_FILE_TYPE_BLOB)
+    return content_info.dump()
 
 
 def get_random_string():
@@ -51,7 +61,7 @@ def sign_driver(driver=None, output_cat='certificate.cat'):
                                             .sign(encoding=serialization.Encoding.DER,
                                                   options=[pkcs7.PKCS7Options.DetachedSignature])
     with open(output_cat, 'wb') as f:
-        f.write(cat_file)
+        f.write(add_cat_type_to_pkcs7(cat_file))
 
 
 def main():

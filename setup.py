@@ -12,5 +12,6 @@ setup(name='inf2cat',
       install_requires=[
           'cffi==1.15.1',
           'cryptography==40.0.2',
-          'pycparser==2.21'
+          'pycparser==2.21',
+          'asn1crypto==1.5.1'
       ])
